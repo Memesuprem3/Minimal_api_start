@@ -13,3 +13,4 @@ namespace WebApplication_MinimalAPI.Validations
         }
     }
 }
+ 
