@@ -1,13 +1,10 @@
-﻿namespace WebApplication_MinimalAPI.Models
+﻿namespace WebApplication_MinimalAPI.Models.DTOs
 {
-    public class Coupon
+    public class CouponCreateDTO
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public int Precent { get; set; }
         public bool IsActive { get; set; }
-        public DateTime? Created  { get; set; }
-        public DateTime? LastUpdate { get; set; }
-
     }
 }

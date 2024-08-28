@@ -1,5 +1,10 @@
+using AutoMapper;
+using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
+using WebApplication_MinimalAPI;
 using WebApplication_MinimalAPI.Data;
 using WebApplication_MinimalAPI.Models;
+using WebApplication_MinimalAPI.Models.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
@@ -39,42 +46,64 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/helloSUT23", () => "Hello SUT23 from minimal Api");
+//app.MapGet("/helloSUT23", () => "Hello SUT23 from minimal Api");
 
-app.MapGet("/helloJesus", (string name) =>
+//app.MapGet("/helloJesus", (string name) =>
 
-{
+//{
 
-    name = "Jesus christus";
+//    name = "Jesus christus";
 
-    return name;
+//    return name;
 
-});
+//});
 
-app.MapGet("/api/Coupon",() => 
+app.MapGet("/api/Coupons", () =>
 {
     return Results.Ok(CouponStore.couponList);
-});
+}).WithName("GetCoupons").Produces <IEnumerable<Coupon>>(200);
 
 app.MapGet("/api/Coupon/{id}", (int id) =>
 {
 return Results.Ok(CouponStore.couponList.FirstOrDefault (c => c.ID == id));
-});
+}).WithName("GetCoupon").Produces<Coupon>(200);
 
-app.MapPost("/api/Coupon", (Coupon coupone) => 
+app.MapPost("/api/Coupon", async (IValidator<CouponCreateDTO> validator,IMapper _mapper,CouponCreateDTO coupone_C_DTO) =>
 {
-    if(coupone.ID != 0 || string.IsNullOrEmpty(coupone.Name))
+
+    var validatorResult = await validator.ValidateAsync(coupone_C_DTO);
+    if (!validatorResult.IsValid)
     {
-        return Results.BadRequest("invalid id OR name, lol");
+        return Results.BadRequest("invalid Procent or name, lol");
     }
-    if(CouponStore.couponList.FirstOrDefault(c => c.Name.ToLower() == coupone.Name.ToLower()) != null)
+    if (CouponStore.couponList.FirstOrDefault(c => c.Name.ToLower() == coupone_C_DTO.Name.ToLower()) != null)
     {
         return Results.BadRequest("Coupone Name already exists,lol");
-    };
-    coupone.ID = CouponStore.couponList.OrderByDescending(c => c.ID).FirstOrDefault().ID + 1;
-    CouponStore.couponList.Add(coupone);
+    }
 
-    return Results.Ok(coupone);
+    //Utan AutoMapper
+    //Coupon coupoun = new Coupon()
+    //{
+    //    Name = coupone_C_DTO.Name,
+    //    Precent = coupone_C_DTO.Precent,
+    //    IsActive = coupone_C_DTO.IsActive
+    //};
+
+    //Med AutoMapper
+
+    Coupon coupon = _mapper.Map<Coupon>(coupone_C_DTO);
+    coupon.ID = CouponStore.couponList.OrderByDescending(c => c.ID).FirstOrDefault().ID + 1;
+    CouponStore.couponList.Add(coupon);
+
+    CouponDTO couponDto = _mapper.Map<CouponDTO>(coupon);
+
+    return Results.CreatedAtRoute("GetCoupon", new {id = coupon.ID}, coupon);
+}).WithName("CreateCoupon").Produces<CouponCreateDTO>(201).Accepts<Coupon>("application/json").Produces(400);
+
+
+app.MapPut("/api/coupon", (CouponUpdateDTO coupon_U_DTO) =>
+{
+
 });
 
 app.Run();
