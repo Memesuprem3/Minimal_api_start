@@ -101,10 +101,26 @@ app.MapPost("/api/Coupon", async (IValidator<CouponCreateDTO> validator,IMapper 
 }).WithName("CreateCoupon").Produces<CouponCreateDTO>(201).Accepts<Coupon>("application/json").Produces(400);
 
 
-app.MapPut("/api/coupon", (CouponUpdateDTO coupon_U_DTO) =>
+app.MapPut("/api/coupon", async (IMapper _mapper, IValidator<CouponUpdateDTO> _validator, CouponUpdateDTO coupon_U_DTO) =>
 {
+    //Add Validation
+    var validateResult = await _validator.ValidateAsync(coupon_U_DTO);
+    if (!validateResult.IsValid)
+    {
+        return Results.BadRequest("invalid Procent or name, lol");
+    }
 
-});
+    Coupon couponFromeStore = CouponStore.couponList.FirstOrDefault(c => c.ID == coupon_U_DTO.ID);
+    couponFromeStore.IsActive = coupon_U_DTO.IsActive;
+    couponFromeStore.Name = coupon_U_DTO.Name;
+    couponFromeStore.Precent = coupon_U_DTO.Precent;
+    couponFromeStore.LastUpdate = DateTime.Now;
+
+    //AutoMapper
+
+    Coupon coupone = _mapper.Map<Coupon>(coupon_U_DTO);
+    return Results.Ok(coupon_U_DTO);
+}).WithName("UpdateCoupone").Accepts<CouponUpdateDTO>("application/json").Produces<CouponUpdateDTO>(200).Produces(400);
 
 app.Run();
 
