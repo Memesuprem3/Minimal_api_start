@@ -10,6 +10,7 @@ namespace WebApplication_MinimalAPI
         {
             CreateMap<Coupon, CouponCreateDTO>().ReverseMap();
             CreateMap<Coupon, CouponDTO>().ReverseMap();
+            CreateMap<Coupon, CouponUpdateDTO>().ReverseMap();
         }
     }
 }

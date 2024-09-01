@@ -60,25 +60,41 @@ app.MapGet("/weatherforecast", () =>
 
 app.MapGet("/api/Coupons", () =>
 {
-    return Results.Ok(CouponStore.couponList);
-}).WithName("GetCoupons").Produces <IEnumerable<Coupon>>(200);
+    APIRespons response = new APIRespons();
+    response.Result = CouponStore.couponList;
+    response.IsSuccess = true;
+    response.StatusCode = System.Net.HttpStatusCode.OK;
+
+
+
+    return Results.Ok(response);
+}).WithName("GetCoupons").Produces(200);
 
 app.MapGet("/api/Coupon/{id}", (int id) =>
 {
-return Results.Ok(CouponStore.couponList.FirstOrDefault (c => c.ID == id));
+    APIRespons response = new APIRespons();
+    response.Result = CouponStore.couponList.FirstOrDefault(c => c.ID == id);
+    response.IsSuccess = true;
+    response.StatusCode = System.Net.HttpStatusCode.OK;
+
+
+    return Results.Ok(response);
 }).WithName("GetCoupon").Produces<Coupon>(200);
 
 app.MapPost("/api/Coupon", async (IValidator<CouponCreateDTO> validator,IMapper _mapper,CouponCreateDTO coupone_C_DTO) =>
 {
 
+    APIRespons response = new() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest};
+
     var validatorResult = await validator.ValidateAsync(coupone_C_DTO);
     if (!validatorResult.IsValid)
     {
-        return Results.BadRequest("invalid Procent or name, lol");
+        return Results.BadRequest(response);
     }
     if (CouponStore.couponList.FirstOrDefault(c => c.Name.ToLower() == coupone_C_DTO.Name.ToLower()) != null)
     {
-        return Results.BadRequest("Coupone Name already exists,lol");
+        response.ErrorMessages.Add("Coupone Name already Exists");
+        return Results.BadRequest(response);
     }
 
     //Utan AutoMapper
@@ -90,24 +106,27 @@ app.MapPost("/api/Coupon", async (IValidator<CouponCreateDTO> validator,IMapper 
     //};
 
     //Med AutoMapper
-
     Coupon coupon = _mapper.Map<Coupon>(coupone_C_DTO);
     coupon.ID = CouponStore.couponList.OrderByDescending(c => c.ID).FirstOrDefault().ID + 1;
     CouponStore.couponList.Add(coupon);
 
     CouponDTO couponDto = _mapper.Map<CouponDTO>(coupon);
+    response.Result = couponDto;
+    response.IsSuccess = true;
+    response.StatusCode = System.Net.HttpStatusCode.Created;
 
-    return Results.CreatedAtRoute("GetCoupon", new {id = coupon.ID}, coupon);
-}).WithName("CreateCoupon").Produces<CouponCreateDTO>(201).Accepts<Coupon>("application/json").Produces(400);
+    return Results.Ok(response);
+}).WithName("CreateCoupon").Produces<CouponCreateDTO>(201).Accepts<APIRespons>("application/json").Produces(400);
 
 
 app.MapPut("/api/coupon", async (IMapper _mapper, IValidator<CouponUpdateDTO> _validator, CouponUpdateDTO coupon_U_DTO) =>
 {
+    APIRespons response = new() { IsSuccess =false, StatusCode = System.Net.HttpStatusCode.BadRequest };
     //Add Validation
     var validateResult = await _validator.ValidateAsync(coupon_U_DTO);
     if (!validateResult.IsValid)
     {
-        return Results.BadRequest("invalid Procent or name, lol");
+        response.ErrorMessages.Add(validateResult.Errors.FirstOrDefault().ToString());
     }
 
     Coupon couponFromeStore = CouponStore.couponList.FirstOrDefault(c => c.ID == coupon_U_DTO.ID);
@@ -119,8 +138,36 @@ app.MapPut("/api/coupon", async (IMapper _mapper, IValidator<CouponUpdateDTO> _v
     //AutoMapper
 
     Coupon coupone = _mapper.Map<Coupon>(coupon_U_DTO);
-    return Results.Ok(coupon_U_DTO);
+
+    response.Result = _mapper.Map<CouponDTO>(couponFromeStore);
+    response.IsSuccess = true;
+    response.StatusCode = System.Net.HttpStatusCode.OK;
+    
+    return Results.Ok(response);
+
 }).WithName("UpdateCoupone").Accepts<CouponUpdateDTO>("application/json").Produces<CouponUpdateDTO>(200).Produces(400);
+
+app.MapDelete("api/coupon/{id:int}", (int id) =>
+{
+    //söka och träffa
+    APIRespons response = new() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest };
+
+
+    Coupon couponFromStore = CouponStore.couponList.FirstOrDefault(c => c.ID == id);
+
+    if (couponFromStore != null)
+    {
+        CouponStore.couponList.Remove(couponFromStore);
+        response.IsSuccess = true;
+        response.StatusCode=System.Net.HttpStatusCode.Continue;
+        return Results.Ok(response);
+    }
+    else
+    {
+        response.ErrorMessages.Add("Invalid ID,kek");
+        return Results.BadRequest(response);
+    }
+}).WithName("DeleteCoupon");
 
 app.Run();
 
@@ -128,3 +175,4 @@ internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary
 {
     public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
+// slutade vid 01:12:03
