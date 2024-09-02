@@ -78,7 +78,7 @@ namespace Minimal_API_MVC_WEB.Servicies
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            GC.SuppressFinalize(true);
         }
 
         

@@ -9,6 +9,8 @@ namespace Minimal_API_MVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            StaticDetails.CouponApiBase = builder.Configuration["ServiceUrls:SUT23CouponAPI"];
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

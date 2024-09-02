@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApplication_MinimalAPI\WebApplication_MinimalAPI.csproj" />
+    <ProjectReference Include="..\WebApplication_MinimalAPI\CouponAPI.csproj" />
   </ItemGroup>
 
 </Project>

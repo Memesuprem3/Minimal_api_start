@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication_MinimalAPI", "WebApplication_MinimalAPI\WebApplication_MinimalAPI.csproj", "{18ADED1B-17DE-4678-9CDC-EFFEC47ECA90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CouponAPI", "WebApplication_MinimalAPI\CouponAPI.csproj", "{18ADED1B-17DE-4678-9CDC-EFFEC47ECA90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minimal_API_MVC_WEB", "Minimal_API_MVC\Minimal_API_MVC_WEB.csproj", "{1BA2EDE5-E4BF-4349-9D76-13671B61D1E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "web-Coupone", "Minimal_API_MVC\web-Coupone.csproj", "{1BA2EDE5-E4BF-4349-9D76-13671B61D1E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
