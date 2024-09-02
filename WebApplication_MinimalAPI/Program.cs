@@ -1,6 +1,8 @@
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using System;
 using WebApplication_MinimalAPI;
 using WebApplication_MinimalAPI.Data;
 using WebApplication_MinimalAPI.Models;
@@ -15,6 +17,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
+
+//Register DB provider
+builder.Services.AddDbContext<AppDbContext>(options => 
+options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDB")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,38 +32,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
-//app.MapGet("/helloSUT23", () => "Hello SUT23 from minimal Api");
-
-//app.MapGet("/helloJesus", (string name) =>
-
-//{
-
-//    name = "Jesus christus";
-
-//    return name;
-
-//});
 
 app.MapGet("/api/Coupons", () =>
 {
@@ -171,8 +146,3 @@ app.MapDelete("api/coupon/{id:int}", (int id) =>
 
 app.Run();
 
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
-// slutade vid 01:12:03
