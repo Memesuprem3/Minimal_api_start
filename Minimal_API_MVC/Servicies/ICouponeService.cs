@@ -1,6 +1,6 @@
 ﻿using CouponAPI.Models.DTOs;
 
-namespace Minimal_API_MVC_WEB.Servicies
+namespace CouponAPI.Servicies
 {
     public interface ICouponeService
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CouponAPI.Models;
-using Minimal_API_MVC_WEB.Servicies;
+using CouponAPI.Servicies;
 using Newtonsoft.Json;
 using CouponAPI.Models.DTOs;
 
@@ -46,7 +46,7 @@ namespace web_Coupone.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CuponCreate(CouponDTO model)
+        public async Task<IActionResult> CouponCreate(CouponDTO model)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +58,6 @@ namespace web_Coupone.Controllers
             }
             return View(model);
         }
-
         public async Task<IActionResult> UpdateCoupon(int couponId)
         {
             var response = await _couponeService.GetCouponsById<ResponseDto>(couponId);
@@ -73,7 +72,7 @@ namespace web_Coupone.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCoupon(CouponDTO model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var response = await _couponeService.UpdateCouponAsync<ResponseDto>(model);
                 if (response != null && response.IsSuccess)
@@ -84,9 +83,9 @@ namespace web_Coupone.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> DeleteCoupon(int ID)
+        public async Task<IActionResult> DeleteCoupon(int Id)
         {
-            var response = await _couponeService.DeleteCouponAsync<ResponseDto>(ID);
+            var response = await _couponeService.DeleteCouponAsync<ResponseDto>(Id);
 
             if (response != null && response.IsSuccess)
             {
@@ -104,11 +103,11 @@ namespace web_Coupone.Controllers
             {
                 var response = await _couponeService.DeleteCouponAsync<ResponseDto>(model.ID);
 
-                if (response != null && response.IsSuccess) 
+                if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(CouponIndex));
                 }
-                
+
             }
             return NotFound();
         }

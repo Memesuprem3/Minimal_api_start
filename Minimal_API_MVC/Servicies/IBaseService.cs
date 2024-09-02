@@ -1,6 +1,6 @@
 ﻿using CouponAPI.Models;
 
-namespace Minimal_API_MVC_WEB.Servicies
+namespace CouponAPI.Servicies
 {
     public interface IBaseService :IDisposable
     {

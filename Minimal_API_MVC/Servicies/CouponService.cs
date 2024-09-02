@@ -2,7 +2,7 @@
 using CouponAPI.Models.DTOs;
 using CouponAPI.Models;
 
-namespace Minimal_API_MVC_WEB.Servicies
+namespace CouponAPI.Servicies
 {
     public class CouponService : BaseService, ICouponeService
     {

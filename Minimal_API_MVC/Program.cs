@@ -1,6 +1,7 @@
 using CouponAPI;
 using CouponAPI.Repository;
-using Minimal_API_MVC_WEB.Servicies;
+using CouponAPI.Servicies;
+
 
 namespace web_Coupone
 {

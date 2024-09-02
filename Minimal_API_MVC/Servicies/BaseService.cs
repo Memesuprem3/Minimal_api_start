@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace Minimal_API_MVC_WEB.Servicies
+namespace CouponAPI.Servicies
 {
     public class BaseService : IBaseService
     {
