@@ -1,6 +1,6 @@
-﻿using WebApplication_MinimalAPI.Models;
+﻿using CouponAPI.Models;
 
-namespace WebApplication_MinimalAPI.Repository
+namespace CouponAPI.Repository
 {
     public interface ICouponRepository
     {

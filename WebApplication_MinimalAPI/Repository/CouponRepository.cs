@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication_MinimalAPI.Data;
-using WebApplication_MinimalAPI.Models;
+using CouponAPI.Data;
+using CouponAPI.Models;
 
-namespace WebApplication_MinimalAPI.Repository
+namespace CouponAPI.Repository
 {
     public class CouponRepository : ICouponRepository
     {

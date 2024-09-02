@@ -1,4 +1,4 @@
-﻿namespace Minimal_API_MVC
+﻿namespace CouponAPI
 {
     public class StaticDetails
     {

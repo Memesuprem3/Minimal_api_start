@@ -1,4 +1,4 @@
-﻿namespace WebApplication_MinimalAPI.Models
+﻿namespace CouponAPI.Models
 {
     public class Coupon
     {

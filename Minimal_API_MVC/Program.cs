@@ -1,4 +1,8 @@
-namespace Minimal_API_MVC
+using CouponAPI;
+using CouponAPI.Repository;
+using Minimal_API_MVC_WEB.Servicies;
+
+namespace web_Coupone
 {
     public class Program
     {
@@ -8,6 +12,10 @@ namespace Minimal_API_MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            //addservives
+            builder.Services.AddScoped<ICouponeService, CouponService>();
+            builder.Services.AddHttpClient();
 
             StaticDetails.CouponApiBase = builder.Configuration["ServiceUrls:SUT23CouponAPI"];
 

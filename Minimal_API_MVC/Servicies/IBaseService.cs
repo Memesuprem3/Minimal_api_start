@@ -1,4 +1,4 @@
-﻿using Minimal_API_MVC.Models;
+﻿using CouponAPI.Models;
 
 namespace Minimal_API_MVC_WEB.Servicies
 {

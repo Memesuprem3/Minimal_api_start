@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using WebApplication_MinimalAPI.Models;
-using WebApplication_MinimalAPI.Models.DTOs;
+using CouponAPI.Models;
+using CouponAPI.Models.DTOs;
 
-namespace WebApplication_MinimalAPI
+namespace CouponAPI
 {
     public class MappingConfig : Profile
     {

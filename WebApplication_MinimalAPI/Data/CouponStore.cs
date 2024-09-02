@@ -1,6 +1,6 @@
 ﻿
-using WebApplication_MinimalAPI.Models;
-namespace WebApplication_MinimalAPI.Data
+using CouponAPI.Models;
+namespace CouponAPI.Data
 {
     public class CouponStore
     {

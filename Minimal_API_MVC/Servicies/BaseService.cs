@@ -1,5 +1,5 @@
-﻿using Minimal_API_MVC;
-using Minimal_API_MVC.Models;
+﻿using CouponAPI;
+using CouponAPI.Models;
 using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json.Serialization;

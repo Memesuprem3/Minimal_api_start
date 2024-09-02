@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WebApplication_MinimalAPI.Data;
+using CouponAPI.Data;
 
 #nullable disable
 
-namespace WebApplication_MinimalAPI.Migrations
+namespace CouponAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace WebApplication_MinimalAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApplication_MinimalAPI.Models.Coupon", b =>
+            modelBuilder.Entity("CouponAPI.Models.Coupon", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()

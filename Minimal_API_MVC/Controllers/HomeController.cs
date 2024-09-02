@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Minimal_API_MVC.Models;
+using CouponAPI.Models;
 using System.Diagnostics;
 
-namespace Minimal_API_MVC.Controllers
+namespace CouponAPI.Controllers
 {
     public class HomeController : Controller
     {

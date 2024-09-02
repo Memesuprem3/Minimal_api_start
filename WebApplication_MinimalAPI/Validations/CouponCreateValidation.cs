@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using WebApplication_MinimalAPI.Models.DTOs;
+using CouponAPI.Models.DTOs;
 
-namespace WebApplication_MinimalAPI.Validations
+namespace CouponAPI.Validations
 {
     public class CouponCreateValidation : AbstractValidator<CouponCreateDTO>
     {

@@ -1,4 +1,4 @@
-﻿using WebApplication_MinimalAPI.Models.DTOs;
+﻿using CouponAPI.Models.DTOs;
 
 namespace Minimal_API_MVC_WEB.Servicies
 {

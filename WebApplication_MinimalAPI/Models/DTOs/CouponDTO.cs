@@ -1,4 +1,4 @@
-﻿namespace WebApplication_MinimalAPI.Models.DTOs
+﻿namespace CouponAPI.Models.DTOs
 {
     public class CouponDTO
     {

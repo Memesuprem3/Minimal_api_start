@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebApplication_MinimalAPI.Models;
+using CouponAPI.Models;
 
-namespace WebApplication_MinimalAPI.Data
+namespace CouponAPI.Data
 {
     public class AppDbContext : DbContext
     {

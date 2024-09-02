@@ -3,10 +3,10 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System;
-using WebApplication_MinimalAPI;
-using WebApplication_MinimalAPI.Data;
-using WebApplication_MinimalAPI.Models;
-using WebApplication_MinimalAPI.Models.DTOs;
+using CouponAPI;
+using CouponAPI.Data;
+using CouponAPI.Models;
+using CouponAPI.Models.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
-﻿using static Minimal_API_MVC.StaticDetails;
+﻿using static CouponAPI.StaticDetails;
 
-namespace Minimal_API_MVC.Models
+namespace CouponAPI.Models
 {
     public class APIRequest
     {
