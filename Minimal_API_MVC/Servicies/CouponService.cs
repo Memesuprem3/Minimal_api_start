@@ -21,7 +21,7 @@ namespace CouponAPI.Servicies
             {
                 apiType = StaticDetails.ApiType.POST,
                 Data = couponDTO,
-                Url = StaticDetails.CouponApiBase + "/api/Coupon",
+                Url = StaticDetails.CouponApiBase + "/api/coupon",
                 AccessToken = ""
 
             });
@@ -31,9 +31,9 @@ namespace CouponAPI.Servicies
         {
             return await SendAsync<T>(new APIRequest()
             {
-                apiType= StaticDetails.ApiType.DELETE,
+                apiType = StaticDetails.ApiType.DELETE,
                 Data = id,
-                Url = StaticDetails.CouponApiBase + "api/coupon/" + id,
+                Url = StaticDetails.CouponApiBase + "/api/coupon/" + id,
                 AccessToken = ""
 
             });
@@ -53,8 +53,8 @@ namespace CouponAPI.Servicies
         {
             return await SendAsync<T>(new APIRequest()
             {
-                apiType=StaticDetails.ApiType.GET,
-                Url = StaticDetails.CouponApiBase + "/api/coupon" + id,
+                apiType = StaticDetails.ApiType.GET,
+                Url = StaticDetails.CouponApiBase + "/api/coupon/" + id,
                 AccessToken = ""
             });
         }

@@ -2,7 +2,7 @@
 
 namespace CouponAPI.Servicies
 {
-    public interface IBaseService :IDisposable
+    public interface IBaseService : IDisposable
     {
         ResponseDto responseModel { get; set; }
 

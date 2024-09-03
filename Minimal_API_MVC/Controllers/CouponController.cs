@@ -109,7 +109,7 @@ namespace web_Coupone.Controllers
                 }
 
             }
-            return NotFound();
+            return RedirectToAction(nameof(CouponIndex));
         }
     }
 }

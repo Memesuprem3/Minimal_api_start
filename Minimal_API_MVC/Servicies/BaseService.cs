@@ -8,7 +8,7 @@ namespace CouponAPI.Servicies
 {
     public class BaseService : IBaseService
     {
-        public ResponseDto responseModel { get ; set ; }
+        public ResponseDto responseModel { get; set; }
 
         public IHttpClientFactory _httpClient { get; set; }
 
@@ -32,8 +32,8 @@ namespace CouponAPI.Servicies
 
                 if (apiRequest.Data != null)
                 {
-                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), 
-                    Encoding.UTF8,"application/json");
+                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data),
+                    Encoding.UTF8, "application/json");
                 }
 
                 HttpResponseMessage apiResponse = null;
@@ -81,6 +81,6 @@ namespace CouponAPI.Servicies
             GC.SuppressFinalize(true);
         }
 
-        
+
     }
 }

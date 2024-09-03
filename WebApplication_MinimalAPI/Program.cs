@@ -122,7 +122,7 @@ app.MapPut("/api/coupon", async (IMapper _mapper, IValidator<CouponUpdateDTO> _v
 
 }).WithName("UpdateCoupone").Accepts<CouponUpdateDTO>("application/json").Produces<CouponUpdateDTO>(200).Produces(400);
 
-app.MapDelete("api/coupon/{id:int}", (int id) =>
+app.MapDelete("/api/coupon/{id:int}", (int id) =>
 {
     //söka och träffa
     APIRespons response = new() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest };
