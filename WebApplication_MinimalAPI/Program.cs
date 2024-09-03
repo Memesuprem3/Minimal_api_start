@@ -7,6 +7,8 @@ using CouponAPI;
 using CouponAPI.Data;
 using CouponAPI.Models;
 using CouponAPI.Models.DTOs;
+using CouponAPI.Endpoints;
+using CouponAPI.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddDbContext<AppDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionToDB")));
 
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,44 +37,44 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/Coupons", () =>
-{
-    APIRespons response = new APIRespons();
-    response.Result = CouponStore.couponList;
-    response.IsSuccess = true;
-    response.StatusCode = System.Net.HttpStatusCode.OK;
+//app.MapGet("/api/Coupons", () =>
+//{
+//    APIRespons response = new APIRespons();
+//    response.Result = CouponStore.couponList;
+//    response.IsSuccess = true;
+//    response.StatusCode = System.Net.HttpStatusCode.OK;
 
 
 
-    return Results.Ok(response);
-}).WithName("GetCoupons").Produces(200);
+//    return Results.Ok(response);
+//}).WithName("GetCoupons").Produces(200);
 
-app.MapGet("/api/Coupon/{id}", (int id) =>
-{
-    APIRespons response = new APIRespons();
-    response.Result = CouponStore.couponList.FirstOrDefault(c => c.ID == id);
-    response.IsSuccess = true;
-    response.StatusCode = System.Net.HttpStatusCode.OK;
+//app.MapGet("/api/Coupon/{id}", (int id) =>
+//{
+//    APIRespons response = new APIRespons();
+//    response.Result = CouponStore.couponList.FirstOrDefault(c => c.ID == id);
+//    response.IsSuccess = true;
+//    response.StatusCode = System.Net.HttpStatusCode.OK;
 
 
-    return Results.Ok(response);
-}).WithName("GetCoupon").Produces<Coupon>(200);
+//    return Results.Ok(response);
+//}).WithName("GetCoupon").Produces<Coupon>(200);
 
-app.MapPost("/api/Coupon", async (IValidator<CouponCreateDTO> validator,IMapper _mapper,CouponCreateDTO coupone_C_DTO) =>
-{
+//app.MapPost("/api/Coupon", async (IValidator<CouponCreateDTO> validator,IMapper _mapper,CouponCreateDTO coupone_C_DTO) =>
+//{
 
-    APIRespons response = new() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest};
+//    APIRespons response = new() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest};
 
-    var validatorResult = await validator.ValidateAsync(coupone_C_DTO);
-    if (!validatorResult.IsValid)
-    {
-        return Results.BadRequest(response);
-    }
-    if (CouponStore.couponList.FirstOrDefault(c => c.Name.ToLower() == coupone_C_DTO.Name.ToLower()) != null)
-    {
-        response.ErrorMessages.Add("Coupone Name already Exists");
-        return Results.BadRequest(response);
-    }
+//    var validatorResult = await validator.ValidateAsync(coupone_C_DTO);
+//    if (!validatorResult.IsValid)
+//    {
+//        return Results.BadRequest(response);
+//    }
+//    if (CouponStore.couponList.FirstOrDefault(c => c.Name.ToLower() == coupone_C_DTO.Name.ToLower()) != null)
+//    {
+//        response.ErrorMessages.Add("Coupone Name already Exists");
+//        return Results.BadRequest(response);
+//    }
 
     //Utan AutoMapper
     //Coupon coupoun = new Coupon()
@@ -81,17 +85,17 @@ app.MapPost("/api/Coupon", async (IValidator<CouponCreateDTO> validator,IMapper 
     //};
 
     //Med AutoMapper
-    Coupon coupon = _mapper.Map<Coupon>(coupone_C_DTO);
-    coupon.ID = CouponStore.couponList.OrderByDescending(c => c.ID).FirstOrDefault().ID + 1;
-    CouponStore.couponList.Add(coupon);
+//    Coupon coupon = _mapper.Map<Coupon>(coupone_C_DTO);
+//    coupon.ID = CouponStore.couponList.OrderByDescending(c => c.ID).FirstOrDefault().ID + 1;
+//    CouponStore.couponList.Add(coupon);
 
-    CouponDTO couponDto = _mapper.Map<CouponDTO>(coupon);
-    response.Result = couponDto;
-    response.IsSuccess = true;
-    response.StatusCode = System.Net.HttpStatusCode.Created;
+//    CouponDTO couponDto = _mapper.Map<CouponDTO>(coupon);
+//    response.Result = couponDto;
+//    response.IsSuccess = true;
+//    response.StatusCode = System.Net.HttpStatusCode.Created;
 
-    return Results.Ok(response);
-}).WithName("CreateCoupon").Produces<CouponCreateDTO>(201).Accepts<APIRespons>("application/json").Produces(400);
+//    return Results.Ok(response);
+//}).WithName("CreateCoupon").Produces<CouponCreateDTO>(201).Accepts<APIRespons>("application/json").Produces(400);
 
 
 app.MapPut("/api/coupon", async (IMapper _mapper, IValidator<CouponUpdateDTO> _validator, CouponUpdateDTO coupon_U_DTO) =>
@@ -143,6 +147,8 @@ app.MapDelete("/api/coupon/{id:int}", (int id) =>
         return Results.BadRequest(response);
     }
 }).WithName("DeleteCoupon");
+
+app.ConfigurationCouponEndPoints();
 
 app.Run();
 

@@ -1,4 +1,6 @@
-﻿namespace CouponAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CouponAPI.Models
 {
     public class Coupon
     {
