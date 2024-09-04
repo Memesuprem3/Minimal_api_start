@@ -18,6 +18,12 @@ namespace CouponAPI.Endpoints
                 WithName("CreateCoupon").
                 Accepts<CouponCreateDTO>("application/json").
                 Produces(201).Produces(400);
+
+            app.MapPut("/api/coupon", UpdateCoupon).WithName("UpdateCoupone").
+                Accepts<CouponUpdateDTO>("application/json").
+                Produces<CouponUpdateDTO>(200).Produces(400);
+
+            app.MapDelete("/api/coupon/{id:int}", DeleteCoupon).WithName("DeleteCoupon");
         }
 
 
@@ -45,9 +51,9 @@ namespace CouponAPI.Endpoints
 
 
         private async static Task<IResult> CreateCoupon(ICouponRepository _couponRepo,
-            IMapper _mapper,CouponCreateDTO coupon_C_DTO)
+            IMapper _mapper, CouponCreateDTO coupon_C_DTO)
         {
-            APIRespons response = new() { IsSuccess = false, StatusCode=System.Net.HttpStatusCode.BadRequest};
+            APIRespons response = new() { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest };
 
             if (_couponRepo.GetAsync(coupon_C_DTO.Name).GetAwaiter().GetResult() != null)
             {
@@ -63,9 +69,47 @@ namespace CouponAPI.Endpoints
 
             response.Result = couponDto;
             response.IsSuccess = true;
-            response.StatusCode=System.Net.HttpStatusCode.Created;
+            response.StatusCode = System.Net.HttpStatusCode.Created;
 
             return Results.Ok(response);
         }
+
+        private async static Task<IResult> UpdateCoupon(ICouponRepository _couponRepo,
+            IMapper _mapper, CouponUpdateDTO coupon_U_DTO)
+        {
+            APIRespons response = new APIRespons()
+            { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest };
+
+            await _couponRepo.UpdateAsync(_mapper.Map<Coupon>(coupon_U_DTO));
+            await _couponRepo.SaveAsync();
+
+            response.Result = _mapper.Map<CouponUpdateDTO>(await _couponRepo.GetAsync(coupon_U_DTO.ID));
+            response.IsSuccess = true;
+            response.StatusCode = System.Net.HttpStatusCode.OK;
+            return Results.Ok(response);
+        }
+
+        private async static Task<IResult> DeleteCoupon(ICouponRepository _couponRepo, int id)
+        {
+            APIRespons response = new()
+            { IsSuccess = false, StatusCode = System.Net.HttpStatusCode.BadRequest };
+
+            Coupon couponFromDB = await _couponRepo.GetAsync(id);
+
+            if (couponFromDB != null)
+            {
+                await _couponRepo.RemoveAsync(couponFromDB);
+                await _couponRepo.SaveAsync();
+                response.IsSuccess = true;
+                response.StatusCode = System.Net.HttpStatusCode.NoContent;
+                return Results.Ok(response);
+            }
+            else
+            {
+                response.ErrorMessages.Add("Invalid ID");
+                return Results.BadRequest(response);
+            }
+        }
+
     }
 }
